@@ -40,7 +40,7 @@ import type {
   ChatCompletionRole,
   ChatCompletionTool,
   CompletionChoice,
-} from 'openai/resources/index.mjs';
+} from 'openai/resources/index.js';
 import { checkModelName } from './utils';
 
 /**
@@ -249,9 +249,10 @@ export function fromOpenAiToolCall(
     | ChatCompletionMessageToolCall
     | ChatCompletionChunk.Choice.Delta.ToolCall
 ): ToolRequestPart {
-  if (!toolCall.function) {
+  // Check if this is a function tool call (not a custom tool call)
+  if (!('function' in toolCall) || !toolCall.function) {
     throw Error(
-      `Unexpected openAI chunk choice. tool_calls was provided but one or more tool_calls is missing.`
+      `Unexpected openAI chunk choice. tool_calls was provided but one or more tool_calls is missing function property.`
     );
   }
   const f = toolCall.function;
@@ -386,7 +387,7 @@ export function defineOpenaiCompatibleModel<
       const client = await clientFactory(request);
       const body = toRequestBody(model, request);
       if (streamingRequested) {
-        const stream = client.beta.chat.completions.stream({
+        const stream = client.chat.completions.stream({
           ...body,
           stream: true,
         });

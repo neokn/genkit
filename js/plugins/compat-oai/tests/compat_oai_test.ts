@@ -1359,7 +1359,7 @@ describe('openAIModelRunner', () => {
         abortSignal: abortSignal as unknown as AbortSignal,
       }
     );
-    expect(openaiClient.beta.chat.completions.stream).toHaveBeenCalledWith(
+    expect(openaiClient.chat.completions.stream).toHaveBeenCalledWith(
       {
         model: 'gpt-4o',
         stream: true,

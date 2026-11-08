@@ -21,7 +21,7 @@
   "author": "genkit",
   "license": "Apache-2.0",
   "dependencies": {
-    "openai": "^4.95.0"
+    "openai": "^6.7.0"
   },
   "peerDependencies": {
     "genkit": "workspace:^"

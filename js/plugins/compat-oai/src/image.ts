@@ -135,8 +135,10 @@ export function defineCompatOpenAIImageModel<
       configSchema: modelRef?.configSchema,
     },
     async (request, { abortSignal }) => {
+      const params = toImageGenerateParams(modelName!, request, requestBuilder);
+      // Explicitly set stream to false to get ImagesResponse instead of Stream
       const result = await client.images.generate(
-        toImageGenerateParams(modelName!, request, requestBuilder),
+        { ...params, stream: false },
         { signal: abortSignal }
       );
       return toGenerateResponse(result);

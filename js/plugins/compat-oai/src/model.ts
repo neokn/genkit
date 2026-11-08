@@ -237,9 +237,10 @@ export function fromOpenAIToolCall(
     | ChatCompletionChunk.Choice.Delta.ToolCall,
   choice: ChatCompletion.Choice | ChatCompletionChunk.Choice
 ): ToolRequestPart {
-  if (!toolCall.function) {
+  // Check if this is a function tool call (not a custom tool call)
+  if (!('function' in toolCall) || !toolCall.function) {
     throw Error(
-      `Unexpected openAI chunk choice. tool_calls was provided but one or more tool_calls is missing.`
+      `Unexpected openAI chunk choice. tool_calls was provided but one or more tool_calls is missing function property.`
     );
   }
   const f = toolCall.function;
@@ -421,7 +422,7 @@ export function openAIModelRunner(
     let response: ChatCompletion;
     const body = toOpenAIRequestBody(name, request, requestBuilder);
     if (options?.streamingRequested) {
-      const stream = client.beta.chat.completions.stream(
+      const stream = client.chat.completions.stream(
         {
           ...body,
           stream: true,

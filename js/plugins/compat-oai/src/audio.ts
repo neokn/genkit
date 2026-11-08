@@ -23,7 +23,6 @@ import { GenerationCommonConfigSchema, Message, modelRef, z } from 'genkit';
 import type { ModelAction, ModelInfo } from 'genkit/model';
 import { model } from 'genkit/plugin';
 import type OpenAI from 'openai';
-import { Response } from 'openai/core.mjs';
 import type {
   SpeechCreateParams,
   Transcription,
@@ -140,7 +139,7 @@ function toTTSRequest(
 }
 
 async function toGenerateResponse(
-  response: Response,
+  response: globalThis.Response,
   responseFormat: 'mp3' | 'opus' | 'aac' | 'flac' | 'wav' | 'pcm' = 'mp3'
 ): Promise<GenerateResponseData> {
   const resultArrayBuffer = await response.arrayBuffer();
